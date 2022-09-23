@@ -1,5 +1,5 @@
 class AbstractManager {
-  constructor({ table }) {
+  constructor(table) {
     this.table = table;
   }
 
