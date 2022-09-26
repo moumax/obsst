@@ -1,10 +1,9 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const auth = require("./middlewares/auth");
-require("dotenv");
+require("dotenv").config();
 
 const app = express();
 
@@ -12,7 +11,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+    origin: process.env.FRONTEND_URL ?? "http://localhost:5000",
     credentials: true,
     optionsSuccessStatus: 200,
   })
@@ -29,21 +28,14 @@ const authRouter = require("./routes/authRouter");
 router.use("/user", auth, userRouter);
 router.use("/auth", authRouter);
 
-app.use(router);
+// API routes
+app.use("/api", router);
 
-const reactIndexFile = path.join(
-  __dirname,
-  "..",
-  "..",
-  "frontend",
-  "dist",
-  "index.html"
-);
-
-if (fs.existsSync(reactIndexFile)) {
-  app.get("*", (req, res) => {
-    res.sendFile(reactIndexFile);
-  });
-}
+// Redirect all requests to the REACT app
+app.get("/*", (req, res) => {
+  res.sendFile(
+    path.join(__dirname, "..", "..", "frontend", "dist", "index.html")
+  );
+});
 
 module.exports = app;

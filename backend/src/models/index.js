@@ -27,10 +27,10 @@ const models = fs
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const Manager = require(path.join(__dirname, file));
 
-    const managerInstance = new Manager();
-    managerInstance.setConnection(pool);
+    // eslint-disable-next-line no-param-reassign
+    acc[Manager.table] = new Manager(pool, Manager.table);
 
-    return { ...acc, [managerInstance.table]: managerInstance };
+    return acc;
   }, {});
 
 const handler = {

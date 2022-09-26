@@ -31,9 +31,9 @@ class UserController {
 
   static add = (req, res) => {
     const newUser = req.body;
-    const authorised = true;
+    const authorized = true;
 
-    if (authorised) {
+    if (authorized) {
       const validateErrors = models.users.validate(newUser);
       if (validateErrors) {
         console.error(validateErrors);
@@ -59,14 +59,14 @@ class UserController {
 
   static modify = async (req, res) => {
     const newUser = req.body;
-    const authorised = true;
+    const authorized = true;
 
-    if (authorised) {
+    if (authorized) {
       if (newUser.password) {
         newUser.password_hash = await hashPassword(newUser.password);
         delete newUser.password;
       }
-      const validationErrors = models.users.validate(newUser, false);
+      const validationErrors = models.user.validate(newUser, false);
       if (validationErrors) res.status(422).json({ validationErrors });
       else {
         models.users
@@ -86,9 +86,9 @@ class UserController {
   };
 
   static delete = async (req, res) => {
-    const authorised = true;
+    const authorized = true;
 
-    if (authorised) {
+    if (authorized) {
       models.users
         .delete(req.params.id)
         .then(() => {

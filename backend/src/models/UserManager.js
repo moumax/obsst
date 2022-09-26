@@ -8,7 +8,7 @@ class UserManager extends AbstractManager {
     this.presence = forCreation ? "required" : "optional";
 
     const joiObject = {
-      mail: Joi.string().max(100).presence(this.presence),
+      mail: Joi.string().max(45).presence(this.presence),
       password: Joi.string().max(500).presence(this.presence),
     };
 
@@ -22,7 +22,7 @@ class UserManager extends AbstractManager {
 
   insert(user) {
     return this.connection.query(
-      `insert into ${UserManager.table}(mail, password_hash) values (?, ?)`,
+      `insert into ${UserManager.table} (mail, password_hash) values (?, ?)`,
       [user.mail, user.password_hash]
     );
   }
@@ -36,12 +36,12 @@ class UserManager extends AbstractManager {
 
   findByUserEmail(mail) {
     return this.connection
-      .query(`select * from ${this.table} where mail = ? `, [mail])
+      .query(`select * from  ${this.table} where mail = ?`, [mail])
       .then((result) => result[0]);
   }
 
   findByUserId(user, id) {
-    return this.connection.query(`select * from ${this.table} where id = ?`, [
+    return this.connection.query(`select * from  ${this.table} where id = ?`, [
       user,
       id,
     ]);

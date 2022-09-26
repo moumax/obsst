@@ -4,7 +4,7 @@ export default function Home() {
   const navigate = useNavigate();
   return (
     <div>
-      <h1>Bienvenue sur le site de l'obsservatoire de Saint Jean Le Blanc</h1>
+      <h1>Bienvenue sur le site de l'observatoire de Saint Jean Le Blanc</h1>
       <button type="button" onClick={() => navigate("/login")}>
         Log
       </button>
