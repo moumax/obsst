@@ -1,5 +1,6 @@
 class AbstractManager {
-  constructor({ table }) {
+  constructor(connection, table) {
+    this.connection = connection;
     this.table = table;
   }
 
@@ -17,10 +18,6 @@ class AbstractManager {
     return this.connection.query(`delete from ${this.table} where id = ?`, [
       id,
     ]);
-  }
-
-  setConnection(connection) {
-    this.connection = connection;
   }
 }
 
