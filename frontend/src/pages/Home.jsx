@@ -8,6 +8,9 @@ export default function Home() {
       <button type="button" onClick={() => navigate("/login")}>
         Log
       </button>
+      <button type="button" onClick={() => navigate("/events")}>
+        Events
+      </button>
     </div>
   );
 }

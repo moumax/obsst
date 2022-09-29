@@ -1,9 +1,10 @@
 import React from "react";
+import Event from "../components/Event";
 
 function Events() {
   return (
     <div>
-      <p>Page Events publique</p>
+      <Event />
     </div>
   );
 }
