@@ -7,7 +7,7 @@ import CurrentUserContext from "../contexts/userContext";
 export default function Login() {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUser } = useContext(CurrentUserContext);
+  const { user, setUser } = useContext(CurrentUserContext);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -64,14 +64,16 @@ export default function Login() {
         <button type="button" onClick={() => navigate("/")}>
           Retour à la page d'accueil
         </button>
-        <button
-          type="button"
-          onClick={() => {
-            handleDisconnect();
-          }}
-        >
-          Déconnection
-        </button>
+        {user && (
+          <button
+            type="button"
+            onClick={() => {
+              handleDisconnect();
+            }}
+          >
+            Déconnection
+          </button>
+        )}
       </form>
     </div>
   );
