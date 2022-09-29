@@ -14,14 +14,14 @@ function Event() {
 
   useEffect(() => {
     getEvent();
-  }, []);
+  }, [event]);
 
   return (
     <div>
       <p>Composant event</p>
       <div className="timeline">
         {event.map((data) => (
-          <ul>
+          <ul key={data.id}>
             <li className="date">
               <p className="event-date">{data.date}</p>
               <h2 className="event-title">{data.title}</h2>

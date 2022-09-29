@@ -11,6 +11,9 @@ export default function Home() {
       <button type="button" onClick={() => navigate("/events")}>
         Events
       </button>
+      <button type="button" onClick={() => navigate("/administration")}>
+        Administration
+      </button>
     </div>
   );
 }
