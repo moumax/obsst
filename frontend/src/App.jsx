@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Administration from "./pages/Administration";
 
 import { CurrentUserContextProvider } from "./contexts/userContext";
 
@@ -11,6 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/administration" element={<Administration />} />
         </Routes>
       </div>
     </CurrentUserContextProvider>
