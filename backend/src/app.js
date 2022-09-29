@@ -24,9 +24,11 @@ app.use(express.static(path.join(__dirname, "..", "..", "frontend", "dist")));
 const router = express.Router();
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
+const eventRouter = require("./routes/eventRouter");
 
 router.use("/user", auth, userRouter);
 router.use("/auth", authRouter);
+router.use("/events", eventRouter);
 
 // API routes
 app.use("/api", router);
