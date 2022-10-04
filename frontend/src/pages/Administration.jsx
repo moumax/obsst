@@ -1,11 +1,16 @@
 import React from "react";
-import AddEvent from "../components/AddEvent";
+import { useNavigate } from "react-router-dom";
+import CrudEvent from "../components/CrudEvent";
 
 function Administration() {
+  const navigate = useNavigate();
   return (
     <div>
       <p>Page administration</p>
-      <AddEvent />
+      <CrudEvent />
+      <button type="button" onClick={() => navigate("/")}>
+        Retour à la page d'accueil
+      </button>
     </div>
   );
 }
