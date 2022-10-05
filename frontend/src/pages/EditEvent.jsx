@@ -72,7 +72,7 @@ export default function EditEvent() {
               <input
                 type="text"
                 name="event-date"
-                defaultValue={data.date}
+                defaultValue={data.date.slice(0, 10)}
                 onChange={(e) => setDate(e.target.value)}
               />
               <input
