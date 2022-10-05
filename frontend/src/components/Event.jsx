@@ -24,7 +24,7 @@ function Event() {
           <ul key={data.id}>
             <li className="date">
               <div>
-                <p className="event-date">{data.date}</p>{" "}
+                <p className="event-date">{data.date.slice(0, 10)}</p>{" "}
                 <h2 className="event-title">{data.title}</h2>{" "}
                 <p className="event-description">{data.description}</p>{" "}
                 <p className="event-site">{data.site}</p>
