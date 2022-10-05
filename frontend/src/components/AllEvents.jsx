@@ -35,7 +35,7 @@ export default function DisplayEvent() {
 
   useEffect(() => {
     getEvent();
-  }, [event]);
+  }, []);
 
   return (
     <div>

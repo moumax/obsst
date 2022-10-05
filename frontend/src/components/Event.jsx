@@ -14,7 +14,7 @@ function Event() {
 
   useEffect(() => {
     getEvent();
-  }, [event]);
+  }, []);
 
   return (
     <div>
