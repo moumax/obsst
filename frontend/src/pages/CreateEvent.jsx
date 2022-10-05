@@ -29,6 +29,7 @@ export default function CreateEvent() {
           setDescription("");
           setDate("");
           setSite("");
+          navigate("/administration");
         })
         .catch((err) => {
           console.error(err);
