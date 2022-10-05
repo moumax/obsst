@@ -39,6 +39,9 @@ export default function Home() {
       <button type="button" onClick={() => navigate("/administration")}>
         Administration
       </button>
+      <button type="button" onClick={() => navigate("/tools")}>
+        Tools
+      </button>
       {user && (
         <button
           type="button"
