@@ -25,10 +25,12 @@ const router = express.Router();
 const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
 const eventRouter = require("./routes/eventRouter");
+const camerasRouter = require("./routes/camerasRouter");
 
 router.use("/user", auth, userRouter);
 router.use("/auth", authRouter);
 router.use("/events", eventRouter);
+router.use("/cameras", camerasRouter);
 
 // API routes
 app.use("/api", router);
