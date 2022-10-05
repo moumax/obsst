@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Administration from "./pages/Administration";
 import Events from "./pages/Events";
+import CreateEvent from "./pages/CreateEvent";
+import EditEvent from "./pages/EditEvent";
 
 import { CurrentUserContextProvider } from "./contexts/userContext";
 
@@ -15,6 +17,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/administration" element={<Administration />} />
           <Route path="/events" element={<Events />} />
+          <Route
+            path="/administration/create-event"
+            element={<CreateEvent />}
+          />
+          <Route
+            path="/administration/edit-event/:id"
+            element={<EditEvent />}
+          />
         </Routes>
       </div>
     </CurrentUserContextProvider>
