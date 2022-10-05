@@ -40,7 +40,7 @@ export default function DisplayCameras() {
   return (
     <div>
       {/* Change this link */}
-      <button type="submit" onClick={() => navigate("create-event")}>
+      <button type="submit" onClick={() => navigate("create-camera")}>
         Créer une nouvelle camera
       </button>
       <h1>Liste des cameras</h1>

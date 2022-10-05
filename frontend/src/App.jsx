@@ -5,6 +5,7 @@ import Administration from "./pages/Administration";
 import Events from "./pages/Events";
 import CreateEvent from "./pages/CreateEvent";
 import EditEvent from "./pages/EditEvent";
+import CreateCamera from "./pages/CreateCamera";
 import Tools from "./pages/Tools";
 
 import { CurrentUserContextProvider } from "./contexts/userContext";
@@ -27,6 +28,7 @@ function App() {
             path="/administration/edit-event/:id"
             element={<EditEvent />}
           />
+          <Route path="/tools/create-camera" element={<CreateCamera />} />
         </Routes>
       </div>
     </CurrentUserContextProvider>
