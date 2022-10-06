@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -6,6 +7,8 @@ import userAPI from "../services/userAPI";
 
 export default function DisplayCameras() {
   const [cameras, setCameras] = useState([]);
+  const [cameraId, setCameraId] = useState("");
+  const [model, setModel] = useState("");
   const { user } = useContext(CurrentUserContext);
   const navigate = useNavigate();
 
@@ -37,6 +40,14 @@ export default function DisplayCameras() {
     getCameras();
   }, []);
 
+  const handleCamera = (e) => {
+    const getCameraId = e.target.value;
+    // eslint-disable-next-line no-restricted-syntax
+    console.log(getCameraId);
+    setCameraId(getCameraId);
+    setModel(e.data[0].model);
+  };
+
   return (
     <div>
       {/* Change this link */}
@@ -44,28 +55,79 @@ export default function DisplayCameras() {
         Créer une nouvelle camera
       </button>
       <h1>Liste des cameras</h1>
-      {cameras.map((data) => (
+      <select name="brand" onChange={(e) => handleCamera(e)}>
+        <option>---Select Camera</option>
+        {cameras.map((data) => (
+          <option key={data.id} value={data.id}>
+            {data.brand}
+          </option>
+        ))}
+      </select>
+      <select name="brand">
+        <option>---Select Model</option>
+        {cameras.map((data) => (
+          <option key={data.id} value={data.id}>
+            {setModel}
+          </option>
+        ))}
+      </select>
+      {/* {cameras.map((data) => (
         <ul key={data.id}>
           <li>
-            <h2>{data.marque}</h2>
-            <p>Modèle : {data.modele}</p>
-            <p>Capteur : {data.capteur}</p>
+            <h2>{data.brand}</h2>
+            <p>Modèle : {data.model}</p>
+            {data.sensor === "" || data.sensor === null ? (
+              <p />
+            ) : (
+              <p>Capteur : {data.sensor}</p>
+            )}
             <p>Type de capteur : {data.type}</p>
-            <p>Largeur du capteur : {data.largeurMM}</p>
-            <p>Hauteur du capteur : {data.hauteurMM}</p>
-            <p>Largeur en pixel du capteur : {data.largeurPix}</p>
-            <p>Hauteur en pixel du capteur : {data.hauteurPix}</p>
+            <p>Largeur du capteur : {data.lengthmm}</p>
+            <p>Hauteur du capteur : {data.heightmm}</p>
+            <p>Largeur en pixel du capteur : {data.lengthpix}</p>
+            <p>Hauteur en pixel du capteur : {data.heightpix}</p>
             <p>Photosites : {data.photosites}</p>
             <p>Megapixels : {data.megapixels}</p>
-            <p>Dynamique : {data.dynamique}</p>
-            <p>Bits : {data.bits}</p>
-            <p>Bruit de lecture : {data.bruitLecture}</p>
-            <p>Courant d'obscurité : {data.courantObscurite}</p>
-            <p>Temps de lecture du capteur : {data.tempsLecture}</p>
-            <p>Capacité des pixels : {data.capacitePixel}</p>
-            <p>Refroidissement : -{data.refroidissement}°C</p>
-
-            {/* Change this link */}
+            {data.cadence === 0 || data.cadence === null ? (
+              <p />
+            ) : (
+              <p>Cadence : {data.cadence} images par seconde</p>
+            )}
+            {data.dynamic === 0 || data.dynamic === null ? (
+              <p />
+            ) : (
+              <p>Dynamique : {data.dynamic}</p>
+            )}
+            {data.bits === 0 || data.bits === null ? (
+              <p />
+            ) : (
+              <p>Bits : {data.bits}</p>
+            )}
+            {data.readNoise === 0 || data.readNoise === null ? (
+              <p />
+            ) : (
+              <p>Bruit de lecture : {data.readNoise}</p>
+            )}
+            {data.darkCurrent === 0 || data.darkCurrent === null ? (
+              <p />
+            ) : (
+              <p>Courant d'obscurité : {data.darkCurrent}</p>
+            )}
+            {data.readTime === 0 || data.readTime === null ? (
+              <p />
+            ) : (
+              <p>Temps de lecture du capteur : {data.readTime}</p>
+            )}
+            {data.capacity === 0 || data.capacity === null ? (
+              <p />
+            ) : (
+              <p>Capacité des pixels : {data.capacity}</p>
+            )}
+            {data.cooler === "" || data.cooler === null ? (
+              <p />
+            ) : (
+              <p>Refroidissement : -{data.cooler}°C</p>
+            )}
             <button
               type="button"
               onClick={() => navigate(`/administration/edit-event/${data.id}`)}
@@ -77,7 +139,7 @@ export default function DisplayCameras() {
             </button>
           </li>
         </ul>
-      ))}
+      ))} */}
     </div>
   );
 }

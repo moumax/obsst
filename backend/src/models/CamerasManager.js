@@ -8,24 +8,24 @@ class CamerasManager extends AbstractManager {
     this.presence = forCreation ? "required" : "optional";
 
     const joiObject = {
-      marque: Joi.string().max(100).presence(this.presence),
-      modele: Joi.string().max(100).presence(this.presence),
-      capteur: Joi.string().max(100).presence(this.presence),
+      brand: Joi.string().max(100).presence(this.presence),
+      model: Joi.string().max(100).presence(this.presence),
+      sensor: Joi.string().max(100).empty(""),
       type: Joi.string().max(100).presence(this.presence),
-      largeurMM: Joi.float().presence(this.presence),
-      hauteurMM: Joi.float().presence(this.presence),
-      largeurPx: Joi.number().integer().presence(this.presence),
-      hauteurPx: Joi.number().integer().presence(this.presence),
-      photosites: Joi.float().presence(this.presence),
-      megapixels: Joi.float().presence(this.presence),
+      lengthmm: Joi.number().presence(this.presence),
+      heightmm: Joi.number().presence(this.presence),
+      lengthpix: Joi.number().integer().presence(this.presence),
+      heightpix: Joi.number().integer().presence(this.presence),
+      photosites: Joi.number().presence(this.presence),
+      megapixels: Joi.number().presence(this.presence),
       cadence: Joi.number().integer(),
-      dynamique: Joi.number().integer(),
+      dynamic: Joi.number().integer(),
       bits: Joi.string().max(100),
-      bruitLecture: Joi.string().max(100),
-      courantObscurite: Joi.string().max(100),
-      tempsLecture: Joi.string().max(100),
-      capacitePixel: Joi.number().integer(),
-      refroidissement: Joi.number().integer(),
+      readNoise: Joi.string().max(100),
+      darkCurrent: Joi.string().max(100),
+      readTime: Joi.string().max(100),
+      capacity: Joi.number().integer(),
+      cooler: Joi.number().integer(),
     };
 
     return Joi.object(joiObject).validate(data, { abortEarly: false }).error;
@@ -33,8 +33,27 @@ class CamerasManager extends AbstractManager {
 
   insert(camera) {
     return this.connection.query(
-      `insert into ${CamerasManager.table} (title, description, date, site) values (?, ?, ?, ?)`,
-      [camera.title, camera.description, camera.date, camera.site]
+      `insert into ${CamerasManager.table} (brand, model, sensor, type, lengthmm, heightmm, lengthpix, heightpix, photosites, megapixels, cadence, dynamic, bits, readNoise, darkCurrent, readTime, capacity, cooler) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        camera.brand,
+        camera.model,
+        camera.sensor,
+        camera.type,
+        camera.lengthmm,
+        camera.heightmm,
+        camera.lengthpix,
+        camera.heightpix,
+        camera.photosites,
+        camera.megapixels,
+        camera.cadence,
+        camera.dynamic,
+        camera.bits,
+        camera.readNoise,
+        camera.darkCurrent,
+        camera.readTime,
+        camera.capacity,
+        camera.cooler,
+      ]
     );
   }
 
