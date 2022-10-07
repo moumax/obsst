@@ -2,13 +2,14 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Select from "react-select";
 import CurrentUserContext from "../contexts/userContext";
 import userAPI from "../services/userAPI";
 
 export default function DisplayCameras() {
   const [cameras, setCameras] = useState([]);
-  const [cameraId, setCameraId] = useState("");
-  const [model, setModel] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [display, setDisplay] = useState(false);
   const { user } = useContext(CurrentUserContext);
   const navigate = useNavigate();
 
@@ -40,37 +41,102 @@ export default function DisplayCameras() {
     getCameras();
   }, []);
 
-  const handleCamera = (e) => {
-    const getCameraId = e.target.value;
-    // eslint-disable-next-line no-restricted-syntax
-    console.log(getCameraId);
-    setCameraId(getCameraId);
-    setModel(e.data[0].model);
+  const searcher = (e) => {
+    const { value } = e.target;
+    setSearchTerm(value);
+    if (value === "") setDisplay(false);
+  };
+
+  const handleDisplay = (e) => {
+    setDisplay(true);
   };
 
   return (
     <div>
-      {/* Change this link */}
       <button type="submit" onClick={() => navigate("create-camera")}>
         Créer une nouvelle camera
       </button>
-      <h1>Liste des cameras</h1>
-      <select name="brand" onChange={(e) => handleCamera(e)}>
-        <option>---Select Camera</option>
-        {cameras.map((data) => (
-          <option key={data.id} value={data.id}>
-            {data.brand}
-          </option>
-        ))}
-      </select>
-      <select name="brand">
-        <option>---Select Model</option>
-        {cameras.map((data) => (
-          <option key={data.id} value={data.id}>
-            {setModel}
-          </option>
-        ))}
-      </select>
+      <input type="text" placeholder="Rechercher" onChange={searcher} />
+      <div>
+        {cameras
+          .filter((val) => {
+            return val.model.toLowerCase().includes(searchTerm.toLowerCase());
+          })
+          .map((val, index) => (
+            <>
+              {searchTerm && (
+                <button
+                  type="button"
+                  key={val.id}
+                  value={val.id}
+                  onClick={(e) => handleDisplay(e, val)}
+                >
+                  {val.model}
+                </button>
+              )}
+              {display && (
+                <div key={val}>
+                  <h2>{val.brand}</h2>
+                  <p>Modèle : {val.model}</p>
+                  <p>{val.sensor}</p>
+                  {val.sensor === "" || val.sensor === null ? (
+                    <p />
+                  ) : (
+                    <p>Capteur : {val.sensor}</p>
+                  )}
+                  <p>Type de capteur : {val.type}</p>
+                  <p>Largeur du capteur : {val.lengthmm}</p>
+                  <p>Hauteur du capteur : {val.heightmm}</p>
+                  <p>Largeur en pixel du capteur : {val.lengthpix}</p>
+                  <p>Hauteur en pixel du capteur : {val.heightpix}</p>
+                  <p>Photosites : {val.photosites}</p>
+                  <p>Megapixels : {val.megapixels}</p>
+                  {val.cadence === 0 || val.cadence === null ? (
+                    <p />
+                  ) : (
+                    <p>Cadence : {val.cadence} images par seconde</p>
+                  )}
+                  {val.dynamic === 0 || val.dynamic === null ? (
+                    <p />
+                  ) : (
+                    <p>Dynamique : {val.dynamic}</p>
+                  )}
+                  {val.bits === 0 || val.bits === null ? (
+                    <p />
+                  ) : (
+                    <p>Bits : {val.bits}</p>
+                  )}
+                  {val.readNoise === 0 || val.readNoise === null ? (
+                    <p />
+                  ) : (
+                    <p>Bruit de lecture : {val.readNoise}</p>
+                  )}
+                  {val.darkCurrent === 0 || val.darkCurrent === null ? (
+                    <p />
+                  ) : (
+                    <p>Courant d'obscurité : {val.darkCurrent}</p>
+                  )}
+                  {val.readTime === 0 || val.readTime === null ? (
+                    <p />
+                  ) : (
+                    <p>Temps de lecture du capteur : {val.readTime}</p>
+                  )}
+                  {val.capacity === 0 || val.capacity === null ? (
+                    <p />
+                  ) : (
+                    <p>Capacité des pixels : {val.capacity}</p>
+                  )}
+                  {val.cooler === "" || val.cooler === null ? (
+                    <p />
+                  ) : (
+                    <p>Refroidissement : -{val.cooler}°C</p>
+                  )}
+                </div>
+              )}
+            </>
+          ))}
+      </div>
+
       {/* {cameras.map((data) => (
         <ul key={data.id}>
           <li>
@@ -86,7 +152,7 @@ export default function DisplayCameras() {
             <p>Hauteur du capteur : {data.heightmm}</p>
             <p>Largeur en pixel du capteur : {data.lengthpix}</p>
             <p>Hauteur en pixel du capteur : {data.heightpix}</p>
-            <p>Photosites : {data.photosites}</p>
+            <p>Photosites :  {data.photosites}</p>
             <p>Megapixels : {data.megapixels}</p>
             {data.cadence === 0 || data.cadence === null ? (
               <p />
