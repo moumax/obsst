@@ -6,9 +6,10 @@ import userAPI from "../services/userAPI";
 
 export default function DisplayCameras() {
   const [cameras, setCameras] = useState([]);
-  const [value, setValue] = useState("");
+  const [cool, setCool] = useState([]);
   const { user } = useContext(CurrentUserContext);
   const navigate = useNavigate();
+  const arr = [];
 
   const getCameras = () => {
     userAPI.get("/api/cameras").then((response) => {
@@ -35,22 +36,18 @@ export default function DisplayCameras() {
     } else toast.warning("Vous n'êtes pas connecté !");
   };
 
+  const addCool = (cooler) => {
+    arr.push(cooler);
+    console.warn(arr);
+  };
+
+  const total = () => {
+    setCool(arr.reduce((acc, curr) => acc + curr));
+  };
+
   useEffect(() => {
     getCameras();
   }, []);
-
-  const onChange = (event) => {
-    setValue(event.target.value);
-  };
-
-  const onSearch = (searchTerm) => {
-    setValue(searchTerm);
-    // console.log(value);
-  };
-
-  const write = () => {
-    return value;
-  };
 
   return (
     <div>
@@ -58,35 +55,28 @@ export default function DisplayCameras() {
         <button type="submit" onClick={() => navigate("create-camera")}>
           Créer une nouvelle camera
         </button>
-        <input
-          type="text"
-          value={value}
-          placeholder="Rechercher"
-          onChange={onChange}
-        />
-        <button type="button" onClick={() => onSearch(value)}>
-          Search
-        </button>
       </div>
       <div>
-        {cameras
-          .filter((item) => {
-            const searchTerm = value.toLowerCase();
-            const model = item.model.toLowerCase();
-
-            return (
-              searchTerm && model.startsWith(searchTerm) && model !== searchTerm
-            );
-          })
-          .slice(0, 10)
-          .map((item) => (
-            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-            <div key={item.id} onClick={() => onSearch(item.model)}>
-              {item.model}
-            </div>
-          ))}
-        <div>{write}</div>
+        {cameras.map((data) => (
+          <div>
+            <p>{data.brand}</p>
+            <p>{data.cooler}</p>
+            <p>{data.cadence}</p>
+            <label htmlFor="cooler">cooler</label>
+            <input
+              name="cooler"
+              type="checkbox"
+              onClick={() => addCool(data.cooler)}
+            />
+            <label htmlFor="cadence">cadence</label>
+          </div>
+        ))}
       </div>
+
+      <button type="button" onClick={total}>
+        Total
+      </button>
+      <h2>{cool}</h2>
     </div>
   );
 }
