@@ -7,9 +7,10 @@ import userAPI from "../services/userAPI";
 export default function DisplayCameras() {
   const [cameras, setCameras] = useState([]);
   const [cool, setCool] = useState([]);
+  const [erreur, setErreur] = useState("");
   const { user } = useContext(CurrentUserContext);
   const navigate = useNavigate();
-  const arr = [];
+  let arr = [];
 
   const getCameras = () => {
     userAPI.get("/api/cameras").then((response) => {
@@ -37,12 +38,34 @@ export default function DisplayCameras() {
   };
 
   const addCool = (cooler) => {
+    setErreur("");
+    console.warn("add Cooler");
     arr.push(cooler);
-    console.warn(arr);
+    console.warn("arr:", arr);
+  };
+
+  const reset = () => {
+    arr = [];
+    console.warn("arr reset:", arr);
+    setCool([]);
+    setErreur("");
   };
 
   const total = () => {
-    setCool(arr.reduce((acc, curr) => acc + curr));
+    if (arr.length === 1) {
+      console.warn("ATTENTION 1 SEULE VALEUR AJOUTE");
+      setErreur("ATTENTION, 1 SEULE VALEUR AJOUTE");
+    }
+    if (arr.length === 0) {
+      console.warn("ATTENTION PAS DE VALEUR AJOUTE");
+      setErreur("ATTENTION, PAS DE VALEUR AJOUTE");
+    } else {
+      const calcul = arr.reduce((curr, acc) => {
+        return curr + acc;
+      });
+      setCool(calcul);
+      console.warn("total: ", calcul);
+    }
   };
 
   useEffect(() => {
@@ -58,25 +81,29 @@ export default function DisplayCameras() {
       </div>
       <div>
         {cameras.map((data) => (
-          <div>
-            <p>{data.brand}</p>
-            <p>{data.cooler}</p>
-            <p>{data.cadence}</p>
-            <label htmlFor="cooler">cooler</label>
-            <input
-              name="cooler"
-              type="checkbox"
+          <div key={data.id}>
+            <p>Marque : {data.brand}</p>
+            <p>Cooler : {data.cooler}°C</p>
+            <p>Cadence : {data.cadence}</p>
+            <label htmlFor="cooler">Cooler : </label>
+            <button
+              type="button"
+              value="cooler"
               onClick={() => addCool(data.cooler)}
-            />
-            <label htmlFor="cadence">cadence</label>
+            >
+              Sélectionner cette caméra
+            </button>
           </div>
         ))}
       </div>
-
       <button type="button" onClick={total}>
         Total
       </button>
-      <h2>{cool}</h2>
+      <button type="button" onClick={reset}>
+        Reset
+      </button>
+      <h2>Calcul de cooler : {cool}°C</h2>
+      <p>{erreur}</p>
     </div>
   );
 }
