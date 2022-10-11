@@ -6,6 +6,7 @@ import userAPI from "../services/userAPI";
 
 export default function DisplayCameras() {
   const [cameras, setCameras] = useState([]);
+  const [optics, setOptics] = useState([]);
   const [cool, setCool] = useState([]);
   const [erreur, setErreur] = useState("");
   const { user } = useContext(CurrentUserContext);
@@ -15,6 +16,12 @@ export default function DisplayCameras() {
   const getCameras = () => {
     userAPI.get("/api/cameras").then((response) => {
       setCameras(response.data[0]);
+    });
+  };
+
+  const getOptics = () => {
+    userAPI.get("/api/optics").then((response) => {
+      setOptics(response.data[0]);
     });
   };
 
@@ -37,10 +44,10 @@ export default function DisplayCameras() {
     } else toast.warning("Vous n'êtes pas connecté !");
   };
 
-  const addCool = (cooler) => {
+  const calculation = (values) => {
     setErreur("");
     console.warn("add Cooler");
-    arr.push(cooler);
+    arr.push(values);
     console.warn("arr:", arr);
   };
 
@@ -70,6 +77,7 @@ export default function DisplayCameras() {
 
   useEffect(() => {
     getCameras();
+    getOptics();
   }, []);
 
   return (
@@ -89,9 +97,25 @@ export default function DisplayCameras() {
             <button
               type="button"
               value="cooler"
-              onClick={() => addCool(data.cooler)}
+              onClick={() => calculation(data.cooler)}
             >
               Sélectionner cette caméra
+            </button>
+          </div>
+        ))}
+      </div>
+      <div>
+        {optics.map((data) => (
+          <div key={data.id}>
+            <p>Marque : {data.brand}</p>
+            <p>Cooler : {data.diameterMM}mm</p>
+            <label htmlFor="cooler">Diametre : </label>
+            <button
+              type="button"
+              value="cooler"
+              onClick={() => calculation(data.diameterMM)}
+            >
+              Sélectionner ce tube optique
             </button>
           </div>
         ))}
