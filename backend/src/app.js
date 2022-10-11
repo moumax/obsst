@@ -26,11 +26,13 @@ const userRouter = require("./routes/userRouter");
 const authRouter = require("./routes/authRouter");
 const eventRouter = require("./routes/eventRouter");
 const camerasRouter = require("./routes/camerasRouter");
+const opticsRouter = require("./routes/opticsRouter");
 
 router.use("/user", auth, userRouter);
 router.use("/auth", authRouter);
 router.use("/events", eventRouter);
 router.use("/cameras", camerasRouter);
+router.use("/optics", opticsRouter);
 
 // API routes
 app.use("/api", router);
