@@ -13,14 +13,16 @@ export default function DisplayCameras() {
   const navigate = useNavigate();
   let arr = [];
 
-  const getCameras = () => {
-    userAPI.get("/api/cameras").then((response) => {
+  const getCameras = async () => {
+    await userAPI.get("/api/cameras").then((response) => {
+      console.warn("réponse server cameras");
       setCameras(response.data[0]);
     });
   };
 
-  const getOptics = () => {
-    userAPI.get("/api/optics").then((response) => {
+  const getOptics = async () => {
+    await userAPI.get("/api/optics").then((response) => {
+      console.warn("reponse server optics");
       setOptics(response.data[0]);
     });
   };
@@ -58,21 +60,15 @@ export default function DisplayCameras() {
     setErreur("");
   };
 
-  const total = () => {
-    if (arr.length === 1) {
-      console.warn("ATTENTION 1 SEULE VALEUR AJOUTE");
-      setErreur("ATTENTION, 1 SEULE VALEUR AJOUTE");
-    }
-    if (arr.length === 0) {
-      console.warn("ATTENTION PAS DE VALEUR AJOUTE");
-      setErreur("ATTENTION, PAS DE VALEUR AJOUTE");
-    } else {
-      const calcul = arr.reduce((curr, acc) => {
-        return curr + acc;
-      });
-      setCool(calcul);
-      console.warn("total: ", calcul);
-    }
+  const pouvoirSeparateur = () => {
+    const calcul = 0.252 * (550 / arr[0]);
+    setCool(calcul);
+    console.warn("total: ", calcul);
+  };
+
+  const echantillonageEffectif = () => {
+    const calcul = 206 * (arr[0] / arr[1]);
+    setCool(calcul);
   };
 
   useEffect(() => {
@@ -92,12 +88,13 @@ export default function DisplayCameras() {
           <div key={data.id}>
             <p>Marque : {data.brand}</p>
             <p>Cooler : {data.cooler}°C</p>
+            <p>Photosites: {data.photosites}</p>
             <p>Cadence : {data.cadence}</p>
             <label htmlFor="cooler">Cooler : </label>
             <button
               type="button"
               value="cooler"
-              onClick={() => calculation(data.cooler)}
+              onClick={() => calculation(data.photosites)}
             >
               Sélectionner cette caméra
             </button>
@@ -108,25 +105,30 @@ export default function DisplayCameras() {
         {optics.map((data) => (
           <div key={data.id}>
             <p>Marque : {data.brand}</p>
-            <p>Cooler : {data.diameterMM}mm</p>
+            <p>Diametre : {data.diameterMM}mm</p>
+            <p>Focal en mm: {data.focalMM}</p>
             <label htmlFor="cooler">Diametre : </label>
             <button
               type="button"
               value="cooler"
-              onClick={() => calculation(data.diameterMM)}
+              onClick={() => calculation(data.focalMM)}
             >
               Sélectionner ce tube optique
             </button>
           </div>
         ))}
       </div>
-      <button type="button" onClick={total}>
-        Total
+      <button type="button" onClick={pouvoirSeparateur}>
+        Calcul pouvoir séparateur :
       </button>
+      {cool}
+      <button type="button" onClick={echantillonageEffectif}>
+        Calcul Echantillonage effectif :
+      </button>
+      {cool}
       <button type="button" onClick={reset}>
         Reset
       </button>
-      <h2>Calcul de cooler : {cool}°C</h2>
       <p>{erreur}</p>
     </div>
   );
